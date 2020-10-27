@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
@@ -47,5 +48,33 @@ public class PlayerScript : MonoBehaviour
         // AceCheck();
         cardIndex++;
         return handValue;
+    }
+
+    public void AceCheck()
+    {
+        foreach (CardScript ace in aceList)
+        {
+            if (handValue + 10 < 22 && ace.GetValueOfCard() == 1)
+            {
+                ace.SetValue(11);
+                handValue += 10;
+            } else if (handValue > 21 && ace.GetValueOfCard() == 11)
+            {
+                // if converting, adjust gameobject value and hand value
+                ace.SetValue(1);
+                handValue -= 10;
+            }
+        }
+    }
+
+    // Add or subtract from money, for bets
+    public void AdjustMoney(int amount)
+    {
+        money += amount;
+    }
+
+    public int GetMoney()
+    {
+        return money;
     }
 }
